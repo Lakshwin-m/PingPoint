@@ -1,14 +1,17 @@
-import { useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
-import { useToast } from '@/hooks/use-toast';
-import { Bot } from 'lucide-react';
-import { 
-  useClerk, 
-  useUser 
-} from '@clerk/clerk-react';
-import { useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { useToast } from "@/hooks/use-toast";
+import { Bot } from "lucide-react";
+import { useClerk, useUser } from "@clerk/clerk-react";
+import { useEffect } from "react";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -19,7 +22,7 @@ const Login = () => {
   // Redirect to dashboard if already signed in
   useEffect(() => {
     if (isSignedIn) {
-      navigate('/dashboard');
+      navigate("/dashboard");
     }
   }, [isSignedIn, navigate]);
 
@@ -47,17 +50,16 @@ const Login = () => {
         {/* Clerk SignIn Component */}
         <Card className="backdrop-blur-sm bg-white/95 border-white/20">
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl font-semibold text-center">Sign in</CardTitle>
+            <CardTitle className="text-2xl font-semibold text-center">
+              Sign in
+            </CardTitle>
             <CardDescription className="text-center">
               Sign in to access the platform
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <Button 
-              onClick={handleLogin} 
-              className="w-full"
-            >
-              Sign in with Clerk
+            <Button onClick={handleLogin} className="w-full">
+              Sign in
             </Button>
           </CardContent>
         </Card>
