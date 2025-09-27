@@ -1,27 +1,8 @@
 export interface Ticket {
-  id: string;
-  title: string;
-  description: string;
-  status: 'open' | 'in-progress' | 'resolved' | 'closed';
-  priority: 'low' | 'medium' | 'high' | 'urgent';
-  category: 'billing' | 'technical' | 'product' | 'feedback';
-  channel: 'email' | 'chat' | 'phone' | 'social' | 'form';
-  customer: {
-    name: string;
-    email: string;
-    avatar?: string;
-  };
-  assignee?: {
-    id: string;
-    name: string;
-    avatar?: string;
-  };
-  createdAt: string;
-  updatedAt: string;
-  tags: string[];
-  aiSuggestions?: string[];
-  responseTime?: number;
-  resolutionTime?: number;
+  ID: string;
+  PRIORITY: 'low' | 'medium' | 'high' | 'urgent';
+  CREATEDAT: string;
+  SUMMARY: string;
 }
 
 export interface User {
