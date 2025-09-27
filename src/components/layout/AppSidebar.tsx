@@ -52,7 +52,7 @@ export function AppSidebar() {
           </div>
           {!collapsed && (
             <div>
-              <h2 className="text-lg font-semibold">SupportAI</h2>
+              <h2 className="text-lg font-semibold">Ping Point</h2>
               <p className="text-xs text-muted-foreground">Smart Support</p>
             </div>
           )}

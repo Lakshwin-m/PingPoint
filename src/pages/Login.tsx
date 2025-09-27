@@ -57,7 +57,7 @@ const Login = () => {
             </div>
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-white">SupportAI</h1>
+            <h1 className="text-3xl font-bold text-white">Ping Point</h1>
             <p className="text-white/80">Smart Customer Support Automation</p>
           </div>
         </div>
