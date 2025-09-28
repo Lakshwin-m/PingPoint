@@ -1,0 +1,479 @@
+{
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "filters": {
+          "labelIds": [
+            "CATEGORY_PERSONAL"
+          ],
+          "readStatus": "unread"
+        }
+      },
+      "id": "ef147c64-7c67-47fb-85a0-4054037138c2",
+      "name": "📧 Gmail Customer Inquiry Trigger",
+      "type": "n8n-nodes-base.gmailTrigger",
+      "position": [
+        -656,
+        -480
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "0Rn7O6s9s1bzeHjU",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.Subject }}{{ $json.snippet }}\n\nClassify this as:\n1.High\n2.Low\n3.Medium\n\nAnd Finnaly for low issues Create a proper solution Response",
+        "hasOutputParser": true,
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        -416,
+        -480
+      ],
+      "id": "bbb4c178-4462-4a52-bf2f-60c0f985190e",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -496,
+        -272
+      ],
+      "id": "e0906792-d0c1-4e37-832b-85918ff879da",
+      "name": "Google Gemini Chat Model2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "NgMCT1TtCVBxBQE9",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"flag\": \"Low\",\n\t\"Response\":\"Response\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -288,
+        -272
+      ],
+      "id": "07910a30-420f-400f-b7c4-bc097596b688",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "7c724b31-2582-445c-b2fc-241f269124ca",
+              "leftValue": "={{ $json.output.flag }}",
+              "rightValue": "Low",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -80,
+        -480
+      ],
+      "id": "370f3a14-0cf0-4d71-b081-c2c3c2a1775a",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "reply",
+        "messageId": "={{ $('📧 Gmail Customer Inquiry Trigger').item.json.id }}",
+        "message": "={{ $json.output.Response }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        208,
+        -560
+      ],
+      "id": "f4d01cc2-67d8-4ccf-bd01-18763a4eca20",
+      "name": "Reply to a message",
+      "webhookId": "7aa29900-d1c9-4086-9c76-8c7e94c4d81c",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "0Rn7O6s9s1bzeHjU",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "filters": {},
+        "options": {}
+      },
+      "type": "n8n-nodes-base.microsoftOutlookTrigger",
+      "typeVersion": 1,
+      "position": [
+        -800,
+        -192
+      ],
+      "id": "cf863957-68f8-4518-ac0b-ca42b51ce81d",
+      "name": "Microsoft Outlook Trigger",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "bXnWPNN44dgUFWtO",
+          "name": "Microsoft Outlook account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=\n{{ $json.subject }}{{ $json.bodyPreview }}\nClassify this as:\n1.High\n2.Low\n3.Medium\n\nAnd Finnaly for low issues Create a proper solution Response",
+        "hasOutputParser": true,
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        -432,
+        48
+      ],
+      "id": "8d9d9d1a-e50c-409d-9ead-00bc5f2c58d0",
+      "name": "Basic LLM Chain1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -512,
+        256
+      ],
+      "id": "6c262f9b-1d09-4a8f-b5d6-60cc42b3b9c1",
+      "name": "Google Gemini Chat Model3",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "NgMCT1TtCVBxBQE9",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"flag\": \"High\",\n\t\"Response\":\"hi this is\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -304,
+        256
+      ],
+      "id": "4d361ad1-dc64-4ccb-8899-ba819bd99aa5",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "7c724b31-2582-445c-b2fc-241f269124ca",
+              "leftValue": "={{ $json.output.flag }}",
+              "rightValue": "Low",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -32,
+        0
+      ],
+      "id": "7f724353-0f03-499a-82fa-bb553fd5a810",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "operation": "reply",
+        "messageId": {
+          "__rl": true,
+          "value": "={{ $('Microsoft Outlook Trigger').item.json.id }}",
+          "mode": "id"
+        },
+        "replyToSenderOnly": true,
+        "message": "={{ $('Basic LLM Chain1').item.json.output.Response }}",
+        "additionalFields": {},
+        "options": {}
+      },
+      "type": "n8n-nodes-base.microsoftOutlook",
+      "typeVersion": 2,
+      "position": [
+        176,
+        -128
+      ],
+      "id": "8b7772d0-89ec-4206-b661-a035cadbf7fa",
+      "name": "Reply to a message1",
+      "webhookId": "f826a051-1cc1-4b62-aa03-0858070c9c61",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "bXnWPNN44dgUFWtO",
+          "name": "Microsoft Outlook account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "project": {
+          "__rl": true,
+          "value": "10001",
+          "mode": "list",
+          "cachedResultName": "(Learn) Jira Premium benefits in 5 min 👋"
+        },
+        "issueType": {
+          "__rl": true,
+          "value": "10006",
+          "mode": "list",
+          "cachedResultName": "Epic"
+        },
+        "summary": "This is for testing",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.jira",
+      "typeVersion": 1,
+      "position": [
+        192,
+        -336
+      ],
+      "id": "37ed1e17-30d5-4222-80b1-a56f13056a56",
+      "name": "Create an issue",
+      "credentials": {
+        "jiraSoftwareCloudApi": {
+          "id": "aUORcLggu0epS7nt",
+          "name": "Jira SW Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "create",
+        "database": ""
+      },
+      "type": "n8n-nodes-base.googleFirebaseCloudFirestore",
+      "typeVersion": 1.1,
+      "position": [
+        400,
+        -336
+      ],
+      "id": "2c66c8a2-4ddc-4d20-b188-a3c50d97deaa",
+      "name": "Create a document",
+      "credentials": {
+        "googleApi": {
+          "id": "hU8zmeuFclfonF29",
+          "name": "Google Firebase Cloud Firestore account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "📧 Gmail Customer Inquiry Trigger": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Reply to a message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create an issue",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft Outlook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Basic LLM Chain1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain1": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Reply to a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an issue": {
+      "main": [
+        []
+      ]
+    },
+    "Reply to a message1": {
+      "main": [
+        [
+          {
+            "node": "Create a document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "3e497621-ce17-4a29-8bfb-a7c56b9bbfcf",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5a26ae2893e5989c5b23d53ca532d8a68e925cad19e86fa69f4fa417fe9579c9"
+  },
+  "id": "3DBZKyZf2rvkVlRJ",
+  "tags": []
+}
